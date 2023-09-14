@@ -29,34 +29,35 @@ int numeroBell(int n);                   // Esta función calcula el número de 
 void imprimirNumeroBell(int n);            // Esta función imprime los números de Bell de 0 a n.
 
 
-int factorial(int n){
-    int resultado = 1;
-    if (n == 0) return 0;
-    for (int i = 1; i <= n; i++) {
-        resultado *= i;
+int factorial (int enesimo) {
+    int result = 1;
+    for (int i = 1; i <= enesimo; i++) {
+        result *= i;
     }
-    return resultado;
-}// Esta función calcula el factorial de un número n.
+    return result;
+}
+// Esta función calcula el factorial de un número n.
 
 double combinatoria(int n, int k){
     return factorial(n) / (factorial(k) * factorial(n - k));
 }//Combinatoria == n!/(k!(n-k)!)
 
-int complementoBell(int n, int k, int acc){
-    return (k == n) ? acc : 
-                    complementoBell(n, k + 1, acc + combinatoria(n - 1, k) * numeroBell(k));
-}// Esta función calcula la suma de los coeficientes binomiales de n y k.
-// Esta función calcula el número de Bell de n.
+int numeroBell(int n) {
+    int acc = 1;
+    for (int i = 1; i <= n; i++) {
+        int temp = 0;
+        for (int j = 0; j < i; j++) {
+            temp += combinatoria(i - 1, j) * acc;
+        }
+        acc = temp;
+    }
+    return acc;
+}
 
-int numeroBell(int n){
-    return (n <= 1) ? 1 :
-                    complementoBell(n, 0, 0);
-}//
-
-void imprimirNumeroBell(int n){
-    n == 0 ? printf("%d", numeroBell(n)) : 
-            (imprimirNumeroBell(n - 1), printf(", %d", numeroBell(n)));
-    // Esta función imprime los números de Bell de 0 a n.
+void imprimirNumeroBell(int n) {
+    for (int i = 0; i <= n; i++) {
+        printf("%d ", numeroBell(i));
+    }
 }
 
 int main()
