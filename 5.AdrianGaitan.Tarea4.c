@@ -22,13 +22,9 @@ int perrin(int enesimo) {
         tercerTermino = 2,
         resultado = 0;
 
-    if (enesimo == 0) 
-        return 3;
-    else if (enesimo == 1)
-        return 0;
-    else if (enesimo == 2) 
-        return 2;
-    else 
+    if (enesimo == 0) return 3;
+    if (enesimo == 1) return 0;
+    if (enesimo == 2) return 2;
     for (int i = 3; i <= enesimo; i++) {
         resultado = primerTermino + segundoTermino;
         primerTermino = segundoTermino;
@@ -44,6 +40,7 @@ int imprimirPerrin(int terminos) {
         i == terminos ? printf("%i.", perrin (i)):
         printf("%i, ", perrin (i));
     }
+    return 0;
 }
 
 int main () {
@@ -56,7 +53,7 @@ int main () {
     scanf("%i", &cantidadTerminos);
 
     //Impresión de resultados
-    imprimirPerrin(cantidadTerminos);
+    imprimirPerrin(cantidadTerminos - 1);
 
     return 0;
 }
