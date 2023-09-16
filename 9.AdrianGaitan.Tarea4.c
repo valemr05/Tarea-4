@@ -18,58 +18,54 @@
 - Restricciones: El número de términos debe ser mayor o igual a 0.
 */
 
-// Librerías
 #include <stdio.h>
+#include <math.h>
 
-// Las funciones se declaran antes de ser usadas. Esto es para que el compilador sepa que existen.
-int factorial(int enesimo);                    // Esta función calcula el factorial de un número n.
-double combinatoria(int enesimo, int k);         // Esta función calcula el coeficiente binomial de n y k.
-int complementoBell(int enesimo, int k, int acc); // Esta función calcula la suma de los coeficientes binomiales de n y k.
-int numeroBell(int n);                   // Esta función calcula el número de Bell de n.
-void imprimirNumeroBell(int n);            // Esta función imprime los números de Bell de 0 a n.
-
-
-int factorial (int enesimo) {
-    int result = 1;
-    for (int i = 1; i <= enesimo; i++) {
+double factorial(int enesimo) {
+    double result = 1;
+    for (int i = 1;  i <= enesimo; i++) {
         result *= i;
     }
     return result;
-}
-// Esta función calcula el factorial de un número n.
+}// Esta función calcula el factorial de un número enesimo
 
-double combinatoria(int n, int k){
-    return factorial(n) / (factorial(k) * factorial(n - k));
-}//Combinatoria == n!/(k!(n-k)!)
-
-int numeroBell(int n) {
-    int acc = 1;
-    for (int i = 1; i <= n; i++) {
-        int temp = 0;
-        for (int j = 0; j < i; j++) {
-            temp += combinatoria(i - 1, j) * acc;
-        }
-        acc = temp;
+double stirlingNumber(int enesimo, int k) {
+    double result = 0;
+    for (int i = 0; i <= k; i++) {
+        result += pow(- 1, k - i) * pow(i, enesimo) / (factorial(i) * factorial(k - i));
     }
-    return acc;
-}
 
-void imprimirNumeroBell(int n) {
-    for (int i = 0; i <= n; i++) {
-        printf("%d ", numeroBell(i));
+    if (enesimo >= 0 && enesimo == k) {
+        result = 1;
     }
+    if ( enesimo >= 1 && k == 1) {
+        result = 1;
+    }
+    
+    return result;
+}// Esta función calcula los números de Stirling de segunda clase
+
+double bellNumber(int enesimo) {
+    double result = 0;
+    for (int k = 0; k <= enesimo; k++) {
+        result += stirlingNumber(enesimo, k);
+    }
+    return result;
 }
 
-int main()
-{
+
+int main() {
     //Declaración e inicialización de variables
-    int n = 0; // Esta variable almacena el número de términos que se desean imprimir.
-    //Mensaje de bienvenida
+    int cantidadTerminos = 0;//Cantidad de terminos deseados
+
+    //Mensaje de bienvenida y solicitud de datos
     printf("Este programa va imprimir los términos que le solicites de la serie de Bell: \nEsta serie cuenta el número de particiones no vacías de un conjunto de n elementos. \nComienza con los números 1, 1 y los siguientes términos se calculan como la suma de \nlos términos anteriores multiplicados por los números naturales consecutivos.\nIngrese a continuación el número de términos deseados: ");
-    scanf("%d", &n);
+    scanf("%i", &cantidadTerminos);
 
     //Impresión de terminos deseados
-    printf("\nLos primeros %d términos de la serie de Bell son: ", n);
-    imprimirNumeroBell(n - 1);
-    return 0;
+    for (int i = 0; i < cantidadTerminos; i++) {
+        cantidadTerminos - 1 == i ? printf("%.0lf.", bellNumber(i)) :
+        printf("%.0lf, ", bellNumber(i));
+    }
+    return 0;   
 }
